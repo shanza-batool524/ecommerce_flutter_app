@@ -1,0 +1,134 @@
+import 'package:ecommerce_flutter_app/controllers/auth_service.dart';
+import 'package:flutter/material.dart';
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
+          // optional padding
+          child: Form(
+            child: Column(
+              children: [
+                const Text(
+                  "Login",
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.w700),
+                ),
+                const Text("Get Started with your account"),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your email";
+                      }
+                      return null;
+                    },
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Email",
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: TextFormField(
+                    obscureText: true,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your password";
+                      }
+                      return null;
+                    },
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Password",
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    TextButton(
+                        onPressed: () {}, child: const Text("forgot password"))
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 60,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          AuthService()
+                              .loginWithEmail(_emailController.text,
+                                  _passwordController.text)
+                              .then((value) {
+                            if (value == "login successful") {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text("Login Successful")));
+                              Navigator.restorablePushNamedAndRemoveUntil(
+                                  context, "/home", (route) => false);
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                      content: Text(
+                                value,
+                                style: const TextStyle(color: Colors.white),
+                              )));
+                            }
+                          });
+                          Navigator.pushReplacementNamed(context, "/home");
+                        }
+                      },
+                      child: const Text(
+                        "Login",
+                        style: TextStyle(fontSize: 16),
+                      )),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Dont have an account?"),
+                    TextButton(
+                        onPressed: () {},
+                        child: const Text(
+                          "Signup",
+                          style: TextStyle(color: Colors.blue),
+                        ))
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
