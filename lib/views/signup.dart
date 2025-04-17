@@ -1,4 +1,5 @@
 import 'package:ecommerce_flutter_app/controllers/auth_service.dart';
+import 'package:ecommerce_flutter_app/views/login.dart';
 import 'package:flutter/material.dart';
 
 import 'package:ecommerce_flutter_app/containers/home_button.dart';
@@ -106,7 +107,7 @@ class _SignupPageState extends State<SignupPage> {
                     const Text("Already have an account?"),
                     TextButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>const LoginPage()));
                         },
                         child: const Text(
                           "Login",

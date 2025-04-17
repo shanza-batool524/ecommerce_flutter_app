@@ -1,4 +1,5 @@
 import 'package:ecommerce_flutter_app/controllers/auth_service.dart';
+import 'package:ecommerce_flutter_app/views/signup.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -69,8 +70,45 @@ class _LoginPageState extends State<LoginPage> {
                     TextButton(
                         onPressed: () {
                           showDialog(context: context, builder: (builder){
-                            return const AlertDialog(
-
+                            return  AlertDialog(
+                            title: const Text("Forgot Password"),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text("Enter your email"),
+                                  const SizedBox(height: 10,),
+                                  TextFormField(
+                                    controller: _emailController,
+                                    decoration: const InputDecoration(
+                                      labelText: "email",
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              actions: [
+                                TextButton(onPressed: (){Navigator.pop(context);}, child: Text("Cancel")),
+                                TextButton(onPressed: ()async{
+                                  if(_emailController.text.isEmpty)
+                                  {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text("Please enter your email"),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
+                                  await AuthService().resetPassword(_emailController.text).then((value){
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(value),
+                                        backgroundColor: value=="Password reset email sent" ? Colors.green : Colors.red,
+                                      ),
+                                    );
+                                  });
+                                }, child: Text("Submit"))
+                              ],
                             );
                           });
                         }, child: const Text("Forgot password"))
@@ -118,7 +156,10 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     const Text("Don't have an account?"),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => const SignupPage()));
+                      },
                       child: const Text(
                         "Signup",
                         style: TextStyle(color: Colors.blue),
