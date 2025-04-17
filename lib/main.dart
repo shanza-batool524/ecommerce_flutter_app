@@ -1,3 +1,4 @@
+import 'package:ecommerce_flutter_app/views/admin_home.dart';
 import 'package:ecommerce_flutter_app/views/login.dart';
 import 'package:ecommerce_flutter_app/views/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -21,9 +22,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routes: {
-        "/":(context)=>const LoginPage(),
+        "/":(context)=>const SignupPage(),
         "/login":(context)=>const LoginPage(),
         "/signup":(context)=>const SignupPage(),
+        "/home":(context)=>const AdminHome(),
       },
     );
   }

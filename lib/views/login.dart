@@ -19,8 +19,8 @@ class _LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
-          // optional padding
           child: Form(
+            key: formKey,
             child: Column(
               children: [
                 const Text(
@@ -45,9 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: TextFormField(
@@ -58,72 +56,70 @@ class _LoginPageState extends State<LoginPage> {
                       }
                       return null;
                     },
-                    controller: _emailController,
+                    controller: _passwordController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: "Password",
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     TextButton(
-                        onPressed: () {}, child: const Text("forgot password"))
+                        onPressed: () {}, child: const Text("Forgot password"))
                   ],
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 SizedBox(
                   height: 60,
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: ElevatedButton(
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          AuthService()
-                              .loginWithEmail(_emailController.text,
-                                  _passwordController.text)
-                              .then((value) {
-                            if (value == "login successful") {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text("Login Successful")));
-                              Navigator.restorablePushNamedAndRemoveUntil(
-                                  context, "/home", (route) => false);
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                      content: Text(
-                                value,
-                                style: const TextStyle(color: Colors.white),
-                              )));
-                            }
-                          });
-                          Navigator.pushReplacementNamed(context, "/home");
-                        }
-                      },
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(fontSize: 16),
-                      )),
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        AuthService()
+                            .loginWithEmail(
+                            _emailController.text, _passwordController.text)
+                            .then((value) {
+                          if (value == "login successful") {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Login Successful"),backgroundColor: Colors.green,));
+                            Navigator.restorablePushNamedAndRemoveUntil(
+                                context, "/home", (route) => false);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  value,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                                backgroundColor: Colors.red.shade400,
+                              ),
+                            );
+                          }
+                        });
+                      }
+                    },
+                    child: const Text(
+                      "Login",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Dont have an account?"),
+                    const Text("Don't have an account?"),
                     TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "Signup",
-                          style: TextStyle(color: Colors.blue),
-                        ))
+                      onPressed: () {},
+                      child: const Text(
+                        "Signup",
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ),
