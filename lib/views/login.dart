@@ -67,7 +67,13 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   children: [
                     TextButton(
-                        onPressed: () {}, child: const Text("Forgot password"))
+                        onPressed: () {
+                          showDialog(context: context, builder: (builder){
+                            return const AlertDialog(
+
+                            );
+                          });
+                        }, child: const Text("Forgot password"))
                   ],
                 ),
                 const SizedBox(height: 10),
