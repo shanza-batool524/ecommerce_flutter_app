@@ -119,31 +119,52 @@ class _LoginPageState extends State<LoginPage> {
                   height: 60,
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: ElevatedButton(
-                    onPressed: () {
+                    // onPressed: () {
+                    //   if (formKey.currentState!.validate()) {
+                    //     AuthService()
+                    //         .loginWithEmail(
+                    //         _emailController.text, _passwordController.text)
+                    //         .then((value) {
+                    //       if (value == "login successful") {
+                    //         ScaffoldMessenger.of(context).showSnackBar(
+                    //             const SnackBar(content: Text("Login Successful"),backgroundColor: Colors.green,));
+                    //         Navigator.pushReplacementNamed(
+                    //             context, "/home",);
+                    //       } else {
+                    //         ScaffoldMessenger.of(context).showSnackBar(
+                    //           SnackBar(
+                    //             content: Text(
+                    //               value,
+                    //               style: const TextStyle(color: Colors.white),
+                    //             ),
+                    //             backgroundColor: Colors.red.shade400,
+                    //           ),
+                    //         );
+                    //       }
+                    //     });
+                    //   }
+                    // },
+                    onPressed: () async {
                       if (formKey.currentState!.validate()) {
-                        AuthService()
-                            .loginWithEmail(
-                            _emailController.text, _passwordController.text)
-                            .then((value) {
-                          if (value == "login successful") {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("Login Successful"),backgroundColor: Colors.green,));
-                            Navigator.restorablePushNamedAndRemoveUntil(
-                                context, "/home", (route) => false);
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  value,
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                                backgroundColor: Colors.red.shade400,
-                              ),
-                            );
-                          }
-                        });
+                        String result = await AuthService().loginWithEmail(
+                            _emailController.text, _passwordController.text);
+
+                        if (result == "Login Successful") {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Login Successful"), backgroundColor: Colors.green),
+                          );
+                          Navigator.pushReplacementNamed(context, '/home');  // Using pushReplacementNamed to ensure correct navigation
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(result, style: const TextStyle(color: Colors.white)),
+                              backgroundColor: Colors.red.shade400,
+                            ),
+                          );
+                        }
                       }
                     },
+
                     child: const Text(
                       "Login",
                       style: TextStyle(fontSize: 16),
